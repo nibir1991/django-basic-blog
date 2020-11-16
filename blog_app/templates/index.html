@@ -1,0 +1,72 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block content%}
+
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-9">
+<h2>Our Recent Post</h2>
+<div class="row">
+<!-- Creating loop for fetching tables from post Model-->
+{%for post in object_list %}
+
+    
+    <div class="col-md-4" style="padding:5px;">
+    
+    <div class="card mt-2">
+    
+    <img src="{{post.post_thumb.url}}" style="height:200px; width:100%">
+    
+
+             
+    <div class="card-body">
+    <h5 class="card-title"><a href='{%url 'post' post.pk %}'>{{post.title}}</a></h5>
+    <p><a href="{% url 'category' post.category%}">{{post.category}}--{{post.author.first_name}}</a></p>
+    
+    <p class="card-text">{{post.snippet}}</p>
+    <p>{{post.post_date}} 
+    <!-- Determine the user is logged in to to edit his post-->
+    {% if user.is_authenticated %}
+      <!-- Determine User to eidt his post only-->
+      {% if user.id == post.author.id%}
+    
+    
+        <small><a href="{% url 'update_post' post.pk %}">(Update)</a></small> <small> <a href="{% url 'delete_post' post.pk %}">(Delete)</a> </small>
+       {% endif %}
+    {% endif %}
+     </p> 
+    </div>
+    </div>
+    </div>
+{%endfor%}
+    </div>
+    </div>
+
+    <div class="col-md-3">
+    <h2> Post Categories</h2>
+     {% if cat_menu%}
+        {% for item in cat_menu%}
+            <ul> 
+             <a href="{%url 'category' item%}">{{item}}</a>
+            </ul>
+        {% endfor%}
+
+     {% endif %}
+
+
+
+    </div>
+    </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+

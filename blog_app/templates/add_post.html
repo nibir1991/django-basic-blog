@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+{% block title%}Add Post{%endblock%}
+{%block content%}
+
+
+
+ <div class="container">
+
+{% if user.is_authenticated %} 
+
+  <h1>Add Post </h1>
+  <strong>*Must fill out every field </strong>
+      <div class="form-group post_form mt-5 mx-5">
+      <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{form.media}}
+          {{ form.as_p }}
+           <button class='btn-secondary'>Add Post</button>
+      </form>
+  <!-- Script to automatically identify user-->
+ 
+
+    </div>  
+    
+  
+  </div>
+  
+  
+{%else%}
+  <h2>Get Registered With Us</h2>  
+{%endif%}
+{% endblock %}
+
+
+

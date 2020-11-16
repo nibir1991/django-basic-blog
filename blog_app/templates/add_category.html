@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% block title%}Add Category{%endblock%}
+{%block content%}
+
+
+
+ <div class="container">
+
+{% if user.is_authenticated %} 
+
+  <h1>Add Category</h1>
+  <div class="form-group post_form mt-5 mx-5">
+  <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{form.media}}
+      {{ form.as_p }}
+          
+
+      <button class='btn-secondary'>Add Category</button>
+  </form>
+    </div>  
+    
+  
+  </div>
+
+{%else%}
+  <h2>Get Registered With Us</h2>  
+{%endif%}
+{% endblock %}
+
+
+

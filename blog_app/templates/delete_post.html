@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+{% block title%}Delete Post{%endblock%}
+{%block content%}
+
+
+
+ <div class="container">
+
+{% if user.is_authenticated %} 
+  {% if user.id == post.author.id%} 
+
+    <h1>Delete Post </h1>
+    <div class="form-group post_form mt-5 mx-5">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+            
+        <strong>Are you sure?</strong>
+        <button class='btn-secondary'>Delete Post</button>
+    </form>
+      </div>  
+      
+ 
+    </div>
+  {%endif%}
+{% else%} 
+  <h4>You are not allowed for this action</h4>
+
+{%endif %}  
+
+
+{% endblock %}
+
+
+

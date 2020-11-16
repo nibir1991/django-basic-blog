@@ -1,0 +1,41 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block title%} {%endblock%}
+{%block content%}
+
+<h1>Category: {{cats}} </h1>
+
+<div class="container">
+
+<div class="row">
+{%if category_posts%}
+
+    {% for post in category_posts%}
+       <div class="col-md-4">
+        <div class="card mt-2">
+        
+        <img src="{{post.post_thumb.url}}" class="img-fluid" style="height:400px;"> 
+        <div class="card-body">
+        <h5 class="card-title"><a href='{%url 'post' post.pk %}'>{{post.title}}</a></h5>
+        <p class="card-text">{{post.post_body|slice:':250'|safe}}</p>
+        <p>{{post.post_date}} 
+            {% if user.is_authenticated %}
+            
+            <small><a href="{% url 'update_post' post.pk %}">(Update)</a></small> <small> <a href="{% url 'delete_post' post.pk %}">(Delete)</a> </small>
+        
+            {%endif%} </p>
+            </div>
+        </div>
+        </div>
+    {% endfor%}
+    </div>   
+</div>
+       
+
+{% endif%}
+
+
+{% endblock %}
+
+
+

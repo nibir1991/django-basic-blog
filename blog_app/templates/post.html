@@ -1,0 +1,110 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block title%}{{post.title}}{%endblock%}
+
+{% block content%}
+
+
+
+
+<div class="container">
+<div class="jumbotron mt-5">
+  <h1 class="display-4">{{post.title}}</h1>
+  <p class="lead">{{post.author}}|{{post.author.id}}</p>
+  <p class="lead">{{post.category}}</p>
+  <hr class="my-4">
+
+  {% if post.post_thumb.url%}
+            
+    <img src="{{post.post_thumb.url}}" class="img-fluid">
+  
+  {% endif %}  
+
+  <article class="mt-5">{{post.post_body|safe}}</article>
+  <p class="lead">{{post.post_date}}
+  <!-- Determine the user is logged in to to edit his post-->
+  {%if user.is_authenticated %}
+        <!-- Determine User to eidt his post only-->
+        {% if user.id == post.author.id%}
+
+          <small> <a href="{% url 'update_post' post.pk %}">(Update)</a> </small> <small><a href="{% url 'delete_post' post.pk %}">(Delete)</a></small>
+         {% endif %}
+
+        
+   {% endif  %}
+  
+   <br/> <hr>
+   <form action ="{% url 'like_post' post.pk %}" method="POST">
+   {% csrf_token %}
+   {% if user.is_authenticated %}
+      {% if liked %}
+         <button type="submit", name="post_id", value="{{post.id}}", class='btn btn-sm btn-danger'>Unike</button> 
+      {% else %}   
+         <button type="submit", name="post_id", value="{{post.id}}", class='btn btn-sm btn-primary'>Like</button>
+      {%endif %}
+
+   {%else%}
+          
+      <p>Must be <a href="{% url 'login'%}">logged in</a> to Like</p>
+
+   {%endif %}      
+         
+         
+   --> {{total_likes}} Likes
+     </form>
+   </p>
+<hr>
+
+<hr>
+  <h5>Comments</h5>
+  {% if not post.comments.all%}
+  <p>No Comments</p>
+  <a href="{%url 'add_comment' post.pk%}">Add Comments</a> 
+  {%else%}
+    
+    {% for comment in post.comments.all%}
+    <storng>
+      {{comment.name}}
+      {{comment.date_added}}
+    <storng>
+    <p>{{comment.body}}</p>
+    <a href="{%url 'add_comment' post.pk%}">Add Comments</a>
+    {%endfor%} 
+  {%endif%}
+
+<hr>
+<h5> Author Info </h5>
+<div class="card mb-3">
+  <div class="row no-gutters">
+    <div class="col-md-2">
+ {%if post.author.profile.profile_pic%}   
+      <img src="{{post.author.profile.profile_pic.url}}" class="card-img rounded-circle" width=150px height=150px>
+ {%else %}  
+      <img src="{% static 'the blog/images/profile.jpg'%}" class="card-img rounded-circle" width=150px height=150px>
+ {%endif%}   
+    </div>
+    <div class="col-md-10">
+      <div class="card-body">
+        <h5 class="card-title">{{post.author.first_name}} {{post.author.last_name}}</h5>
+        <p class="card-text">{{post.author.profile.bio}}</p>
+        <p class="card-text"><small class="text-muted">
+        
+        
+        <a href="{%url 'show_profile' post.author.profile.id%}">Profile</a>|<a href="{{post.author.profile.website_url}}">Website</a> | <a href="{{post.author.profile.facebook_url}}">Facebook</a>|<a href="{{post.author.profile.linkdin_url}}">Linkdin</a>|<a href="{{post.author.profile.twitter_url}}">Twitter</a>
+        
+        
+        
+        
+        </small></p>
+      </div>
+    </div>
+  </div>
+</div>
+  
+</div>
+</div>
+<hr>
+
+
+
+{% endblock %}
